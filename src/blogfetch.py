@@ -4,7 +4,6 @@ import re
 
 pool = set()
 allowed = ['github.com', 'linkedin.com', 'stackoverflow.com', 'github.io', 'plus.google.com']
-ret = []
 
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
@@ -45,9 +44,13 @@ class CrawlerThread(threading.Thread):
 	  self.url = url
 	  self.crawlDepth = crawlDepth
 	  self.threadId = hash(self)
+          self.ret = {'twitter': [], 'email': [], 'linkedin': []}
           pool.add(url)
 	  threading.Thread.__init__(self)
 
+      def join(self):
+          threading.Thread.join(self)
+          return self.ret
       def run(self):
       	  """Print out all of the links on the given url associated with this particular thread. Grab the passed in
 	  binary semaphore when attempting to write to STDOUT so that there is no overlap between threads' output."""
@@ -59,26 +62,23 @@ class CrawlerThread(threading.Thread):
           except Exception:
               pass
 
-          twitters = tweetParse(urlMarkUp)
-          linkedins = linkedinParse(urlMarkUp)
-          emails = emailParse(urlMarkUp)
-          if linkedins:
-              print 'linkedin' , linkedins
-          if twitters:
-              print 'twitter' , twitters
-          if emails:
-              print 'email' , emails
+          twitter = tweetParse(urlMarkUp)
+          linkedin = linkedinParse(urlMarkUp)
+          email = emailParse(urlMarkUp)
+          if linkedin: self.ret['linkedin'] += linkedin
+          if twitter: self.ret['twitter'] += twitter
+          if email: self.ret['email'] += email
 
       	  self.binarySemaphore.acquire() # wait if another thread has acquired and not yet released binary semaphore
-	  # print "Thread #%d: Reading from %s" %(self.threadId, self.url)
-	  # print "Thread #%d: Crawl Depth = %d" %(self.threadId, self.crawlDepth)
-      	  # print "Thread #%d: Retreived the following links..." %(self.threadId)
+	  print "Thread #%d: Reading from %s" %(self.threadId, self.url)
+	  print "Thread #%d: Crawl Depth = %d" %(self.threadId, self.crawlDepth)
+      	  print "Thread #%d: Retreived the following links..." %(self.threadId)
 	  urls = []
 	  for link in linkHTMLParser.links:
 	      link = urlparse.urljoin(self.url, link)
 	      urls.append(link)
-	      # print "\t"+link
-	  # print ""
+	      print "\t"+link
+	  print ""
 	  self.binarySemaphore.release()
 	  for url in urls:
               domain = urlparse.urlparse(url).netloc
@@ -91,12 +91,22 @@ class CrawlerThread(threading.Thread):
                   continue
 	      # Keep crawling to different urls until the crawl depth is less than 1
               if self.crawlDepth > 1:
-	      	 CrawlerThread(binarySemaphore, url, self.crawlDepth-1).start()
+	      	 t = CrawlerThread(self.binarySemaphore, url, self.crawlDepth-1)
+                 t.start()
+                 result = t.join()
+                 for key in result.keys():
+                     self.ret[key] = result[key] + self.ret[key]
 
-
+class BlogFetch():
+    def __init__(self, url, crawlDepth=3):
+        self.url = url
+        self.crawlDepth = crawlDepth
+        self.binarySemaphore = threading.Semaphore(1)
+    def fetch(self):
+        t = CrawlerThread(self.binarySemaphore, self.url, self.crawlDepth)
+        t.start()
+        return t.join()
 
 if __name__ == "__main__":
-   binarySemaphore = threading.Semaphore(1)
-   urls = [("http://rickyhan.com", 3)]
-   for (url, crawlDepth) in urls:
-       CrawlerThread(binarySemaphore, url, crawlDepth).start()
+    b = BlogFetch("http://rickyhan.com", 3)
+    print b.fetch()

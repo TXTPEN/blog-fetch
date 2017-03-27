@@ -3,7 +3,6 @@ from HTMLParser import HTMLParser
 import re
 
 pool = set()
-allowed = ['github.com', 'linkedin.com', 'stackoverflow.com', 'github.io', 'plus.google.com']
 
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
@@ -23,23 +22,36 @@ class LinkHTMLParser(HTMLParser):
       def handle_endtag(self, tag):
       	  pass
 
+def titleParse(markup):
+    match_obj = re.findall(r'(?:<title>)(.+?)(?:</title>)', markup)
+    if match_obj:
+        return list(set(match_obj))
+
+def nameParse(markup):
+    match_obj = re.findall('name is (.+?)(?: and|\W)', markup)
+    if match_obj:
+        return list(set(match_obj))
+
 def emailParse(markup):
     match_obj = re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', markup)
     if match_obj:
         return list(set(match_obj))
 
 def linkedinParse(markup):
-    match_obj = re.findall(r'(linkedin.com.+)"', markup)
+    match_obj = re.findall(r'linkedin.com/in/(.+?)"', markup)
     if match_obj:
-        return list(set(match_obj))
+        res = list(set(match_obj))
+        return filter(lambda x: 'share' not in x, res)
 
 def tweetParse(markup):
     match_obj = re.findall(r"http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)", markup)
     if match_obj:
-        return list(set(match_obj))
+        res = list(set(match_obj))
+        [res.remove(i) for i in ['intent',] if i in res]
+        return res
 
 class CrawlerThread(threading.Thread):
-      def __init__(self, binarySemaphore, url, crawlDepth=3, originalDepth=3):
+      def __init__(self, binarySemaphore, url, crawlDepth=3, originalDepth=3, allowed={}):
           """
              Note: originalDepth should be the same as crawlDepth.
              This is used to determine how far the crawler has strayed
@@ -51,8 +63,8 @@ class CrawlerThread(threading.Thread):
 	  self.crawlDepth = crawlDepth
 	  self.originalDepth = originalDepth
 	  self.threadId = hash(self)
-          self.result = {'twitter': [], 'email': [], 'linkedin': []}
-
+          self.result = {key:[] for key in ['linkedin', 'twitter', 'name', 'title', 'email', 'url']}
+          self.allowed = allowed
           pool.add(url)
 	  threading.Thread.__init__(self)
 
@@ -61,6 +73,16 @@ class CrawlerThread(threading.Thread):
           return self.result
 
       def update_result(self):
+          is_top = self.crawlDepth == self.originalDepth
+          if is_top:
+              self.result['url'] = [self.url]
+
+              title = titleParse(self.urlMarkUp)
+              if title: self.result['title'] += title
+
+              name = nameParse(self.urlMarkUp)
+              if name: self.result['name'] += name
+
           twitter = tweetParse(self.urlMarkUp)
           linkedin = linkedinParse(self.urlMarkUp)
           email = emailParse(self.urlMarkUp)
@@ -77,25 +99,41 @@ class CrawlerThread(threading.Thread):
 	      # print "\t"+link
 	  # print ""
 	  self.binarySemaphore.release()
+
+          depth_from_root = self.originalDepth - self.crawlDepth
+          print self.crawlDepth, depth_from_root
+          if depth_from_root == 0:
+              if not self.url.endswith('contact'):
+                  if self.url.endswith('/'):
+                      urls.append(self.url+'contact')
+                  else:
+                      urls.append(self.url+'/contact')
+
+              apex_of_subdomain = re.findall(r"\.(\w+\.\w+)", self.url)
+              if apex_of_subdomain: # if is under a subdomain blog.blah.com -> blah.com
+                  apex = apex_of_subdomain[0]
+                  self.allowed[apex] = 3
+                  urls.append('http://' + apex)
+
+
 	  for url in urls:
               domain = urlparse.urlparse(url).netloc
               old_domain = urlparse.urlparse(self.url).netloc
-              depth_from_root = self.originalDepth - self.crawlDepth
-              print depth_from_root, self.url
 
               if url in pool:
                   continue
+              elif domain in self.allowed and depth_from_root < self.allowed[domain]:
+                  pass
               elif domain != old_domain:
                   continue
-              elif domain in allowed and depth_from_root == 1:
-                  pass
+
 	      # Keep crawling to different urls until the crawl depth is less than 1
               if self.crawlDepth > 1:
-	      	 t = CrawlerThread(self.binarySemaphore, url, self.crawlDepth-1, self.crawlDepth)
-                 t.start()
-                 result = t.join()
-                 for key in result.keys():
-                     self.result[key] = result[key] + self.result[key]
+                  t = CrawlerThread(self.binarySemaphore, url, self.crawlDepth-1, self.crawlDepth, self.allowed)
+                  t.start()
+                  result = t.join()
+                  for key in result.keys():
+                      self.result[key] = result[key] + self.result[key]
 
       def run(self):
       	  """Print out all of the links on the given url associated with this particular thread. Grab the passed in
@@ -110,7 +148,7 @@ class CrawlerThread(threading.Thread):
 
           self.update_result()
 
-	  # print "Thread #%d: Reading from %s" % (self.threadId, self.url)
+	  print "Thread #%d: Reading from %s" % (self.threadId, self.url)
 	  # print "Thread #%d: Crawl Depth = %d" % (self.threadId, self.crawlDepth)
       	  # print "Thread #%d: Retreived the following links..." % (self.threadId)
 
@@ -126,10 +164,16 @@ class BlogFetch():
         t = CrawlerThread(binarySemaphore=self.binarySemaphore,
                           url=self.url,
                           crawlDepth=self.crawlDepth,
-                          originalDepth=self.crawlDepth
+                          originalDepth=self.crawlDepth,
+                          allowed={'github.com': 1,
+                                   'linkedin.com': 1,
+                                   'stackoverflow.com': 1,
+                                   'github.io': 1,
+                                   'plus.google.com': 1,}
                           )
         t.start()
-        return t.join()
+        res = t.join()
+        return {key: list(set(res[key])) for key in res}
 
 if __name__ == "__main__":
     b = BlogFetch("http://rickyhan.com", 3)

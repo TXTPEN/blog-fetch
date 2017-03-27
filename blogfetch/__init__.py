@@ -1,0 +1,1 @@
+from blogfetch import BlogFetch

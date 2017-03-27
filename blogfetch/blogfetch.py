@@ -74,20 +74,21 @@ class CrawlerThread(threading.Thread):
 	  for link in self.linkHTMLParser.links:
 	      link = urlparse.urljoin(self.url, link)
 	      urls.append(link)
-	      print "\t"+link
-	  print ""
+	      # print "\t"+link
+	  # print ""
 	  self.binarySemaphore.release()
 	  for url in urls:
               domain = urlparse.urlparse(url).netloc
               old_domain = urlparse.urlparse(self.url).netloc
-              distance_from_root = self.originalDepth - self.crawlDepth
+              depth_from_root = self.originalDepth - self.crawlDepth
+              print depth_from_root, self.url
 
-              if domain in allowed and distance_from_root == 1:
-                  pass
-              elif url in pool:
+              if url in pool:
                   continue
               elif domain != old_domain:
                   continue
+              elif domain in allowed and depth_from_root == 1:
+                  pass
 	      # Keep crawling to different urls until the crawl depth is less than 1
               if self.crawlDepth > 1:
 	      	 t = CrawlerThread(self.binarySemaphore, url, self.crawlDepth-1, self.crawlDepth)
@@ -109,10 +110,9 @@ class CrawlerThread(threading.Thread):
 
           self.update_result()
 
-
-	  print "Thread #%d: Reading from %s" %(self.threadId, self.url)
-	  print "Thread #%d: Crawl Depth = %d" %(self.threadId, self.crawlDepth)
-      	  print "Thread #%d: Retreived the following links..." %(self.threadId)
+	  # print "Thread #%d: Reading from %s" % (self.threadId, self.url)
+	  # print "Thread #%d: Crawl Depth = %d" % (self.threadId, self.crawlDepth)
+      	  # print "Thread #%d: Retreived the following links..." % (self.threadId)
 
           self.recurse()
 

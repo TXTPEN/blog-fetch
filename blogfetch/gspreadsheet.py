@@ -23,9 +23,11 @@ FLAG_SENT = 7
 
 # If modifying these scopes, delete your previously saved credentials
 
+
 # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-CLIENT_SECRET_FILE = 'client_secret.json'
+FILE_PATH = os.path.dirname(os.path.abspath(__file__)) + '/'
+CLIENT_SECRET_FILE = FILE_PATH + '/../client_secret.json'
 APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
 
@@ -38,11 +40,11 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    credential_dir = os.path.join('./', 'credentials')
+    credential_dir = FILE_PATH + '../credentials'
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,
-                                   'google_spreadsheet.json')
+    credential_path = credential_dir+'/google_spreadsheet.json'
+    print(credential_path)
 
     store = Storage(credential_path)
     credentials = store.get()

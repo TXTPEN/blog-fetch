@@ -294,7 +294,6 @@ news.discovery.com
 www.rollingstone.com
 www.howtoforge.com
 codecondo.com
-www.johndcook.com
 usersnap.com
 news.dice.com
 reason.com
@@ -405,7 +404,6 @@ www.bgr.com
 security.stackexchange.com
 prog21.dadgum.com
 techdunes.com
-www.jamesaltucher.com
 futurism.com
 www.dropbox.com
 www.eweek.com
@@ -470,7 +468,6 @@ www.gnu.org
 azure.microsoft.com
 blog.sfgate.com
 blog.sucuri.net
-pegasuslegend-whatscookin.blogspot.com
 www.androidpolice.com
 www.mondaynote.com
 blog.jelastic.com
@@ -508,7 +505,6 @@ www.javacodegeeks.com
 www.paulgraham.com
 www.shoestring.com.au
 www.theawl.com
-genehughson.wordpress.com
 www.altdevblogaday.com
 blog.regehr.org
 www.toptal.com
@@ -564,11 +560,9 @@ bugzilla.mozilla.org
 msdn.microsoft.com
 www.foreignpolicy.com
 developer.mozilla.org
-michaelochurch.wordpress.com
 www.adweek.com
 www.theatlanticwire.com
 developers.facebook.com
-mikecanex.wordpress.com
 software.intel.com
 www.instructables.com
 www.winmacsofts.com
@@ -588,8 +582,6 @@ www.msn.com
 scripting.com
 siliconangle.com
 simpleprogrammer.com
-cagestokerblog.blogspot.ca
-sam-koblenski.blogspot.com
 www.paulund.co.uk
 www.voxxed.com
 blog.google
@@ -610,7 +602,6 @@ www.datascienceweekly.org
 www.zerohedge.com
 harpers.org
 america.aljazeera.com
-asserttrue.blogspot.com
 mobile.theverge.com
 www.jetbrains.com
 www.programmableweb.com
@@ -633,19 +624,15 @@ www.teslamotors.com
 blogs.oracle.com
 math.stackexchange.com
 www.billboard.com
-blog.xebialabs.com
 esr.ibiblio.org
 www.codementor.io
 www.groklaw.net
-www.humansinvent.com
 www.theinformation.com
-andrewgelman.com
 blog.teamtreehouse.com
 medicalxpress.com
 www.addthis.com
 www.novainfosecportal.com
 www.tbray.org
-andrewchen.co
 marc.info
 skift.com
 ycuniverse.com
@@ -681,8 +668,6 @@ www.sec.gov
 dendory.net
 digg.com
 swizec.com
-www.omgubuntu.co.uk
-blog.codeship.com
 micheleincalifornia.blogspot.com
 www.canuckseo.com
 www.fixedbyvonnie.com
@@ -852,7 +837,6 @@ alltopstartups.com
 engineering.pinterest.com
 inspirationfeed.com
 rachelbythebay.com
-whyevolutionistrue.wordpress.com
 www.brendangregg.com
 www.datagenetics.com
 www.jwz.org
@@ -861,7 +845,6 @@ blog.debugme.eu
 developer.android.com
 hackingdistributed.com
 voices.yahoo.com
-www.andrewspenceonline.com
 www.marketplace.org
 inhabitat.com
 seattletimes.com
@@ -892,7 +875,6 @@ crypto.stackexchange.com
 cydiaism.com
 entrecity.com
 fbppc.com
-rjlipton.wordpress.com
 www.bleepingcomputer.com
 www.ifixit.com
 www.joystiq.com
@@ -936,7 +918,6 @@ sanfrancisco.cbslocal.com
 blog.atlastravelweb.com
 boss.blogs.nytimes.com
 krugman.blogs.nytimes.com
-morepypy.blogspot.com
 programming.oreilly.com
 gcc.gnu.org
 google-opensource.blogspot.com
@@ -944,7 +925,6 @@ m.phys.org
 web.stanford.edu
 blog.venturepact.com
 instagram.com
-jugad2.blogspot.com
 research.google.com
 topinfopost.com
 www.redorbit.com
@@ -959,7 +939,6 @@ technet.microsoft.com
 what-if.xkcd.com
 www.firstpost.com
 maps.google.com
-radiaciones.wordpress.com
 reuters.com
 www.triplepundit.com
 www.prnewswire.com
@@ -1018,7 +997,6 @@ www.ftc.gov
 googleprojectzero.blogspot.com
 googlewebmastercentral.blogspot.com
 www.appleinsider.com
-captaindanko.blogspot.com
 feedproxy.google.com
 www.heavybit.com
 paleofuture.gizmodo.com
@@ -1026,12 +1004,10 @@ s3.amazonaws.com
 www.gamespot.com
 www.github.com
 www.openshift.com
-chrisyeh.blogspot.com
 devcenter.heroku.com
 unix.stackexchange.com
 www.joyent.com
 blogs.nature.com
-failedevolution.blogspot.com
 gothamist.com
 labs.spotify.com
 strata.oreilly.com
@@ -1039,19 +1015,14 @@ graphics.wsj.com
 www.quicksprout.com
 18f.gsa.gov
 blog.linkedin.com
-homakov.blogspot.com
-servletsuite.blogspot.com
 news.netcraft.com
 workplace.stackexchange.com
 www.redhat.com
 my.opera.com
-randomascii.wordpress.com
 bbc.co.uk
 discussions.apple.com
 greyenlightenment.com
 hackaday.io
-johncarlosbaez.wordpress.com
-mulqueeny.wordpress.com
 news.microsoft.com
 storify.com
 swombat.com
@@ -1114,7 +1085,6 @@ blog.8thcolor.com
 chrome.blogspot.com
 javarevisited.blogspot.com
 physics.stackexchange.com
-sdarchitect.wordpress.com
 www.avocarrot.com
 www.blackhat.com
 www.foodtechconnect.com
@@ -1134,7 +1104,6 @@ codegeekz.com
 container-solutions.com
 e27.sg
 gmailblog.blogspot.com
-jamesclear.com
 levels.io
 lists.freebsd.org
 m.facebook.com
@@ -1182,12 +1151,10 @@ blog.protogenist.com
 downloads-app.blogspot.com
 mail.mozilla.org
 www.globalpost.com
-cestlaz.github.io
 homes.cs.washington.edu
 muratbuffalo.blogspot.com
 www.siliconbeat.com
 benjaminkerensa.com
-bpmredux.wordpress.com
 engineeringblog.yelp.com
 ericlippert.com
 ow.ly
@@ -1202,8 +1169,6 @@ blog.yhat.com
 buff.ly
 dl.acm.org
 fcw.com
-fgiesen.wordpress.com
-gilesbowkett.blogspot.com
 learn.onevest.com
 orchestrate.io
 rubygems.org
@@ -1220,9 +1185,6 @@ www.jeffknupp.com
 www.pluggd.in
 www.techiedelight.com
 yahoo.tumblr.com
-250bpm.com
-abovethelaw.com
-arshadchowdhury.com
 blog.codecentric.de
 certsimple.com
 devblog.avdi.org
@@ -1231,7 +1193,6 @@ europa.eu
 fedoramagazine.org
 googleblog.blogspot.in
 icosmogeek.com
-jseliger.wordpress.com
 link.springer.com
 mixpanel.com
 nemops.com
@@ -1296,7 +1257,6 @@ www.r1soft.com
 blogs.cisco.com
 fullstart.com
 ideas.ted.com
-mikemainguy.blogspot.com
 popehat.com
 quickbase.intuit.com
 www.causecast.com
@@ -1310,8 +1270,6 @@ cs.stanford.edu
 cstheory.stackexchange.com
 ngm.nationalgeographic.com
 patft.uspto.gov
-recoding.blogspot.com
-steve-yegge.blogspot.com
 www.technogist.com
 blog.dropbox.com
 blog.mainstreethost.com
@@ -1335,7 +1293,6 @@ blogs.telegraph.co.uk
 books.google.com
 developers.redhat.com
 gitlab.com
-perl6advent.wordpress.com
 research.facebook.com
 www.seas.harvard.edu
 earthobservatory.nasa.gov
@@ -1343,9 +1300,7 @@ m.nautil.us
 michaelrbernste.in
 next.ft.com
 securityskeptic.typepad.com
-terrytao.wordpress.com
 google.github.io
-haifengl.wordpress.com
 www.21times.org
 www.adafruit.com
 www.cia.gov
@@ -1361,7 +1316,6 @@ io9.gizmodo.com
 marojejian.tumblr.com
 pinterest.com
 science.nasa.gov
-swannodette.github.io
 tech.gilt.com
 www.politico.eu
 blog.2ndquadrant.com
@@ -1375,11 +1329,7 @@ www.patentlyapple.com
 www.paypal.com
 www.stumbleupon.com
 air.mozilla.org
-cartesianproduct.wordpress.com
-christophjanz.blogspot.com
 fabiensanglard.net
-lcamtuf.blogspot.com
-scottlocklin.wordpress.com
 tech.firstpost.com
 us5.campaign-archive1.com
 www.amazon.co.uk
@@ -1390,18 +1340,15 @@ live.theverge.com
 thecreatorsproject.vice.com
 wiredcraft.com
 www.huffingtonpost.co.uk
-www.linuxandubuntu.com
 www.nasaspaceflight.com
 www.stableytimes.com
 blogs.skype.com
-doctordata.wordpress.com
 economix.blogs.nytimes.com
 support.microsoft.com
 www.thurrott.com
 brandonhilkert.com
 contrarianroast.co
 directorsblog.nih.gov
-erratasec.blogspot.com
 go.bloomberg.com
 improveandrepeat.com
 m.fastcompany.com
@@ -1409,7 +1356,6 @@ mediadecoder.blogs.nytimes.com
 nginx.org
 raw.githubusercontent.com
 seekingintellect.com
-setandbma.wordpress.com
 windows.microsoft.com
 www.businessinsider.de
 www.cmu.edu
@@ -1417,20 +1363,14 @@ www.guotime.com
 www.hackerrank.com
 apps.facebook.com
 blog.bittorrent.com
-elcronicante.blogspot.com
 groups.csail.mit.edu
 insights.sei.cmu.edu
 insights.wired.com
-jakevdp.github.io
 quickleft.com
 www.thegatesnotes.com
-bitslog.wordpress.com
 developer.nvidia.com
 docs.aws.amazon.com
 engineering.twitter.com
-fourlightyears.blogspot.com
-gowers.wordpress.com
-pocketcluster.wordpress.com
 rockthepost.com
 skeptics.stackexchange.com
 thediplomat.com
@@ -1438,5 +1378,4 @@ www.cs.berkeley.edu
 www.galaxyinsider.com
 www.gv.com
 www.lifehacker.com.au
-cyberomin.github.io
 officialandroid.blogspot.com

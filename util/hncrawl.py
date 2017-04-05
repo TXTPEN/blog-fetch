@@ -1,3 +1,4 @@
+import sys
 import urllib2
 import json
 import datetime
@@ -55,6 +56,7 @@ while True:
 				db.commit()
 
 			except Exception, e:
+                                pass
 				print insert_data
 				print e
 
@@ -64,9 +66,10 @@ while True:
 
 		num_processed += hitsPerPage
 
-		if num_processed % 10000 == 0:
+		if num_processed % 1000 == 0:
 			# write to console periodically to make sure everything's working
 			print "%s HN Posts Processed: %s" % (num_processed, datetime.datetime.now())
+                        if len(sys.argv) == 2 and sys.argv[1] == 'cron': break
 
 		# make sure we stay within API limits
 		time.sleep(3600/10000)

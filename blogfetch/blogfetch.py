@@ -3,7 +3,7 @@ from HTMLParser import HTMLParser
 import re
 
 pool = set()
-MAX_POOL = 400
+MAX_POOL = 20
 
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
@@ -169,7 +169,7 @@ class CrawlerThread(threading.Thread):
 
           self.update_result()
 
-	  # print "Thread #%d: Reading from %s" % (self.threadId, self.url)
+	  print "Reading from %s" % self.url
 	  # print "Thread #%d: Crawl Depth = %d" % (self.threadId, self.crawlDepth)
       	  # print "Thread #%d: Retreived the following links..." % (self.threadId)
 

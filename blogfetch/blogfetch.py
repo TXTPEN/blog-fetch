@@ -1,8 +1,9 @@
-import threading, urllib, urlparse
+import threading, urllib2, urlparse
 from HTMLParser import HTMLParser
 import re
 
 pool = set()
+MAX_POOL = 400
 
 class LinkHTMLParser(HTMLParser):
       A_TAG = "a"
@@ -32,7 +33,16 @@ def nameParse(markup):
     if match_obj:
         return list(set(match_obj))
 
+def deCFEmail(fp):
+    r = int(fp[:2],16)
+    email = ''.join([chr(int(fp[i:i+2], 16) ^ r) for i in range(2, len(fp), 2)])
+    return email
+
 def emailParse(markup):
+    if re.findall(r'email-protection', markup):
+        match = re.findall(r'data-cfemail="(\w+)"', markup)
+        if match:
+            return [deCFEmail(match[0])]
     match_obj = re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', markup)
     if match_obj:
         return list(set(match_obj))
@@ -47,7 +57,7 @@ def tweetParse(markup):
     match_obj = re.findall(r"http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)", markup)
     if match_obj:
         res = list(set(match_obj))
-        [res.remove(i) for i in ['intent',] if i in res]
+        [res.remove(i) for i in ['intent','share'] if i in res]
         return res
 
 class CrawlerThread(threading.Thread):
@@ -65,7 +75,7 @@ class CrawlerThread(threading.Thread):
 	  self.threadId = hash(self)
           self.result = {key:[] for key in ['linkedin', 'twitter', 'name', 'title', 'email', 'url']}
           self.allowed = allowed
-          pool.add(url)
+          pool.add(re.sub(r'#.*$', '', url))
 	  threading.Thread.__init__(self)
 
       def join(self):
@@ -101,7 +111,7 @@ class CrawlerThread(threading.Thread):
 	  self.binarySemaphore.release()
 
           depth_from_root = self.originalDepth - self.crawlDepth
-          print self.crawlDepth, depth_from_root
+          # print self.crawlDepth, depth_from_root
           if depth_from_root == 0:
               if not self.url.endswith('contact'):
                   if self.url.endswith('/'):
@@ -112,7 +122,7 @@ class CrawlerThread(threading.Thread):
               apex_of_subdomain = re.findall(r"\.(\w+\.\w+)", self.url)
               if apex_of_subdomain: # if is under a subdomain blog.blah.com -> blah.com
                   apex = apex_of_subdomain[0]
-                  self.allowed[apex] = 3
+                  self.allowed[apex] = True
                   urls.append('http://' + apex)
 
 
@@ -120,9 +130,13 @@ class CrawlerThread(threading.Thread):
               domain = urlparse.urlparse(url).netloc
               old_domain = urlparse.urlparse(self.url).netloc
 
-              if url in pool:
+              if len(pool) > MAX_POOL:
+                  break
+
+              if re.sub(r'#.*$', '', url) in pool:
                   continue
-              elif domain in self.allowed and depth_from_root < self.allowed[domain]:
+              elif domain in self.allowed and self.allowed[domain]:
+                  self.allowed[domain] = False
                   pass
               elif domain != old_domain:
                   continue
@@ -138,7 +152,14 @@ class CrawlerThread(threading.Thread):
       def run(self):
       	  """Print out all of the links on the given url associated with this particular thread. Grab the passed in
 	  binary semaphore when attempting to write to STDOUT so that there is no overlap between threads' output."""
-	  socket = urllib.urlopen(self.url)
+          headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36' }
+          req = urllib2.Request(self.url, None, headers)
+          try:
+	      socket = urllib2.urlopen(req)
+          except urllib2.HTTPError:
+              return
+          content_type = socket.headers['content-type']
+          if 'text' not in content_type: return
 	  self.urlMarkUp = socket.read()
 	  self.linkHTMLParser = LinkHTMLParser()
           try:
@@ -148,7 +169,7 @@ class CrawlerThread(threading.Thread):
 
           self.update_result()
 
-	  print "Thread #%d: Reading from %s" % (self.threadId, self.url)
+	  # print "Thread #%d: Reading from %s" % (self.threadId, self.url)
 	  # print "Thread #%d: Crawl Depth = %d" % (self.threadId, self.crawlDepth)
       	  # print "Thread #%d: Retreived the following links..." % (self.threadId)
 
@@ -165,16 +186,13 @@ class BlogFetch():
                           url=self.url,
                           crawlDepth=self.crawlDepth,
                           originalDepth=self.crawlDepth,
-                          allowed={'github.com': 1,
-                                   'linkedin.com': 1,
-                                   'stackoverflow.com': 1,
-                                   'github.io': 1,
-                                   'plus.google.com': 1,}
+                          allowed={'github.com': True,
+                                   'linkedin.com': True,
+                                   'stackoverflow.com': True,
+                                   'github.io': True,
+                                   'plus.google.com': True,
+                                  }
                           )
         t.start()
         res = t.join()
         return {key: list(set(res[key])) for key in res}
-
-if __name__ == "__main__":
-    b = BlogFetch("http://rickyhan.com", 3)
-    print b.fetch()

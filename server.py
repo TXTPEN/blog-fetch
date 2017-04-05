@@ -12,8 +12,12 @@ def index():
 @get('/add')
 def add():
     url = request.query['url']
-    g.add(url)
-    json_result = '{"result": "success", "url": "{{url}}"}'
-    return template(json_result, url=url)
+    output = g.add(url)
+    json_result = '{"result": "success", "output":"{{output}}", "url": "{{url}}"}'
+    return template(json_result, url=url, output = output)
+
+@get('/send')
+def send():
+    g.send()
 
 run(host='0.0.0.0', port=9002)

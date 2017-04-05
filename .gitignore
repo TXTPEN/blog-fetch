@@ -94,3 +94,4 @@ client_secret.json
 .venv/
 
 credentials/google_spreadsheet.json
+blogfetch/send_email.py

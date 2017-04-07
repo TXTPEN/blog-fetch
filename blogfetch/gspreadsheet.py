@@ -125,7 +125,7 @@ class DB():
         body = {'values': values}
         result = self.service.spreadsheets().values().append(
                     spreadsheetId=self.spreadsheet_id, range=range_name,
-                    body=body, valueInputOption="RAW").execute()
+                    body=body, insertDataOption='INSERT_ROWS', valueInputOption="RAW").execute()
 
     def _format(self, result):
         def stringify(key):

@@ -95,3 +95,7 @@ client_secret.json
 
 credentials/google_spreadsheet.json
 blogfetch/send_email.py
+
+sent.txt
+diff.txt
+last_id

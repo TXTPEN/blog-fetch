@@ -76,7 +76,7 @@ class Row():
         return "<class _Row, Approved: " + self.row[6] + ", Sent: " + self.row[7] + ">"
 
 class DB():
-    def __init__(self, sheet="Sheet1", spreadsheet_id='1nIoXjshnPZSG4zPGjHjMtmDn5XqARCIiDY03x3rxelg'):
+    def __init__(self, sheet="Sheet2", spreadsheet_id='1nIoXjshnPZSG4zPGjHjMtmDn5XqARCIiDY03x3rxelg'):
         self.spreadsheet_id = spreadsheet_id
         self.sheet = sheet
         credentials = get_credentials()
@@ -141,10 +141,12 @@ class DB():
                  [ stringify(key) for key in ['name','url','title','email','twitter','linkedin'] ]
                ]
 
-    def add(self, url):
+    def add(self, url, name=None):
         b = BlogFetch(url, 6)
         res = b.fetch()
         result = self._format(res)
+        if name:
+            result[0][0] = name
         self._append(values=result, range='')
         return result
 

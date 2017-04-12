@@ -155,11 +155,12 @@ class CrawlerThread(threading.Thread):
           headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36' }
           req = urllib2.Request(self.url, None, headers)
           try:
-	      socket = urllib2.urlopen(req)
+	      socket = urllib2.urlopen(req, timeout=2)
           except urllib2.HTTPError:
               return
-          content_type = socket.headers['content-type']
-          if 'text' not in content_type: return
+          # content_type = socket.headers['content-type']
+          # if 'text' not in content_type: return
+
 	  self.urlMarkUp = socket.read()
 	  self.linkHTMLParser = LinkHTMLParser()
           try:
@@ -186,8 +187,7 @@ class BlogFetch():
                           url=self.url,
                           crawlDepth=self.crawlDepth,
                           originalDepth=self.crawlDepth,
-                          allowed={'github.com': True,
-                                   'linkedin.com': True,
+                          allowed={'linkedin.com': True,
                                    'stackoverflow.com': True,
                                    'github.io': True,
                                    'plus.google.com': True,
